@@ -1,0 +1,25 @@
+[Unit]
+Description=BTC Whale Intelligence - Servicio de Monitoreo On-Chain y Mercado
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=whalewatcher
+Group=whalewatcher
+WorkingDirectory=/opt/whalewatcher
+EnvironmentFile=/opt/whalewatcher/.env
+ExecStart=/opt/whalewatcher/.venv/bin/python -m btc_whale_intelligence ejecutar-ciclo-monitoreo
+StandardOutput=append:/var/log/whalewatcher/monitoreo.log
+StandardError=append:/var/log/whalewatcher/error.log
+Restart=no
+
+# Restricciones de seguridad y memoria para VPS modesto
+MemoryMax=512M
+CPUQuota=80%
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

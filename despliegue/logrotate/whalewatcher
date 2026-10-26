@@ -1,0 +1,13 @@
+/var/log/whalewatcher/*.log /opt/whalewatcher/logs/*.log {
+    daily
+    missingok
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 whalewatcher whalewatcher
+    sharedscripts
+    postrotate
+        # Opcional: señalización o recarga si aplica
+    endscript
+}

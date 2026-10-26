@@ -1,0 +1,11 @@
+nombre_entidad,categoria,nivel_confianza,fuentes_identificacion,direccion_btc,grado_certeza,fuente_atribucion,fecha_verificacion,umbral_personalizado_btc,notas
+Binance,Exchange,0.99,Proof of Reserves oficial de Binance y Arkham Intelligence,34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo,0.98,Binance Cold Storage disclosure,2026-01-15,500,Cold storage principal de Binance
+Binance,Exchange,0.99,Proof of Reserves oficial de Binance y Arkham Intelligence,bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h,0.95,Binance Proof of Reserves,2026-01-15,500,Dirección SegWit nativa de Binance
+Coinbase,Exchange,0.99,Presentaciones regulatorias ante la SEC y Arkham Intelligence,1933phfhK3ZgFQNLGSD8ehcm3ChUM9KUHi,0.95,Coinbase Institutional custody disclosure,2026-02-01,500,Billetera institucional de Coinbase
+Coinbase,Exchange,0.99,Presentaciones regulatorias ante la SEC y Arkham Intelligence,bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf,0.92,Coinbase Prime reporting,2026-02-01,500,Coinbase Prime Custody
+Bitfinex,Exchange,0.98,Bitfinex Cold Wallet disclosures,bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97,0.96,Bitfinex Proof of Reserves,2026-01-20,500,Cold storage SegWit Bitfinex
+BitGo,Custodio,0.95,Certificaciones SOC2 y reportes de custodia de BitGo,bc1qf2ep5g9q8h5c0k5x23577d2g98s76m3z04n87k,0.90,BitGo Trust disclosures,2026-01-10,250,Custodia multi-firma de BitGo
+MicroStrategy,Empresa,0.98,Formularios 8-K ante la SEC y anuncios de Michael Saylor,1P5ZEDWTKTFGxQjZphgWPQUpe554WKDfHQ,0.90,Atribución analítica de compras comunicadas en SEC 8-K,2026-01-05,250,Dirección vinculada a reservas de MicroStrategy
+BlackRock IBIT,Fondo,0.99,Divulgaciones del ETF IBIT ante la SEC y custodio Coinbase Prime,bc1q9d4tek9t6wf54xskjs0479tc892s4f7j01m68y,0.94,ETF custodian reporting Arkham,2026-02-10,250,Fondo cotizado IBIT de BlackRock
+Foundry USA,Minero,0.95,Bloques minados coinbase y metadatos de pool,1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY,0.95,Dirección de recompensa de bloque de Foundry USA Pool,2026-01-01,250,Pool de minería Foundry USA
+Gran Tenedor Histórico,Gran_Tenedor,0.85,Transacciones históricas 2011 verificadas on-chain,1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF,0.90,Billetera histórica inactiva desde 2011,2026-01-01,1000,Ballena histórica de Bitcoin

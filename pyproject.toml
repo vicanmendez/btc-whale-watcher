@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "btc-whale-intelligence"
+version = "0.1.0"
+description = "Plataforma de investigación on-chain de grandes entidades de Bitcoin (no es asesoramiento financiero)."
+requires-python = ">=3.10"
+dependencies = [
+    "SQLAlchemy>=2.0,<2.1",
+    "httpx>=0.27,<1.0",
+    "python-dotenv>=1.0,<2.0",
+    "numpy>=1.26,<3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0,<9.0"]
+
+[project.scripts]
+btc-whale = "btc_whale_intelligence.cli:principal"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

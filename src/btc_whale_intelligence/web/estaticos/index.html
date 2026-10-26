@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Whale Intelligence — Monitor On-Chain en Tiempo Real</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+    <!-- Encabezado / Barra Superior -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="whale-icon">🐋</span>
+                <div>
+                    <h1 class="logo-title">BTC Whale Intelligence</h1>
+                    <span class="logo-sub">Plataforma On-Chain de Detección & Auditoría Epistémica</span>
+                </div>
+            </div>
+
+            <div class="header-stats">
+                <div class="ticker-box">
+                    <span class="pulse-indicator"></span>
+                    <span class="ticker-label">BTC / USDT</span>
+                    <span class="ticker-price" id="btc-price">$--,---.--</span>
+                    <span class="ticker-change" id="btc-change">+0.00%</span>
+                </div>
+
+                <button id="btn-sync" class="btn-primary" onclick="ejecutarCicloOnDemand()">
+                    <span class="btn-icon">⚡</span>
+                    <span class="btn-text">Ejecutar Monitoreo</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Metodológico Constitucional -->
+    <div class="disclaimer-banner">
+        <div class="disclaimer-content">
+            <span class="shield-icon">🛡️</span>
+            <div>
+                <strong>Principio IV & Rigor Epistémico:</strong> Ninguna transferencia on-chain se interpreta automáticamente como una compra o venta. Las estimaciones son hipótesis estadísticas calibradas frente a referencias (*Buy & Hold* y persistencia).
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal -->
+    <main class="main-container">
+        <!-- Tarjetas de Métricas Clave (KPIs) -->
+        <section class="kpi-grid">
+            <div class="kpi-card glassmorphism">
+                <div class="kpi-header">
+                    <span class="kpi-title">Volumen Total Movido</span>
+                    <span class="kpi-icon">📊</span>
+                </div>
+                <div class="kpi-value" id="kpi-volumen-btc">0.00 <span class="unit">BTC</span></div>
+                <div class="kpi-footer" id="kpi-volumen-usd">≈ $0 USD</div>
+            </div>
+
+            <div class="kpi-card glassmorphism">
+                <div class="kpi-header">
+                    <span class="kpi-title">Movimientos Relevantes</span>
+                    <span class="kpi-icon">🎯</span>
+                </div>
+                <div class="kpi-value" id="kpi-total-eventos">0</div>
+                <div class="kpi-footer">Detectados en bloques y mempool</div>
+            </div>
+
+            <div class="kpi-card glassmorphism">
+                <div class="kpi-header">
+                    <span class="kpi-title">Entidades Vigiladas</span>
+                    <span class="kpi-icon">🏛️</span>
+                </div>
+                <div class="kpi-value" id="kpi-total-entidades">0</div>
+                <div class="kpi-footer">Exchanges, custodios y empresas</div>
+            </div>
+
+            <div class="kpi-card glassmorphism">
+                <div class="kpi-header">
+                    <span class="kpi-title">Predicciones Pre-registradas</span>
+                    <span class="kpi-icon">🔒</span>
+                </div>
+                <div class="kpi-value" id="kpi-total-predicciones">0</div>
+                <div class="kpi-footer">Inmutables (24H, 7D, 30D)</div>
+            </div>
+        </section>
+
+        <!-- Pestañas de Navegación -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="cambiarTab('eventos', this)">⚡ Movimientos de Ballenas (Feed)</button>
+            <button class="tab-btn" onclick="cambiarTab('grafico', this)">📈 Gráficos & Distribución</button>
+            <button class="tab-btn" onclick="cambiarTab('entidades', this)">🏛️ Catálogo de Entidades</button>
+            <button class="tab-btn" onclick="cambiarTab('predicciones', this)">🎯 Auditoría vs Baselines</button>
+        </nav>
+
+        <!-- SECCIÓN 1: Movimientos de Ballenas (Feed en vivo) -->
+        <section id="tab-eventos" class="tab-content active">
+            <div class="content-toolbar">
+                <div class="toolbar-left">
+                    <h2>Transacciones Masivas Detectadas</h2>
+                    <span class="badge-count" id="count-eventos">0 registros</span>
+                </div>
+                <div class="toolbar-right">
+                    <select id="filtro-categoria" onchange="cargarEventos()" class="select-filter">
+                        <option value="">Todas las categorías</option>
+                        <option value="ENTRADA_EXCHANGE">Entradas a Exchange</option>
+                        <option value="SALIDA_EXCHANGE">Salidas de Exchange</option>
+                        <option value="TRANSFERENCIA_INTERNA">Transferencias Internas</option>
+                        <option value="MOVIMIENTO_CORPORATIVO">Movimientos Corporativos</option>
+                        <option value="DESCONOCIDA">Desconocidas</option>
+                    </select>
+                    <button class="btn-secondary" onclick="cargarEventos()">🔄 Actualizar</button>
+                </div>
+            </div>
+
+            <div class="table-container glassmorphism">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha UTC</th>
+                            <th>Monto Relevante</th>
+                            <th>Activo / Tokens</th>
+                            <th>Categoría</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Señal 24H (Corto)</th>
+                            <th>Señal 7D (Mediano)</th>
+                            <th>Exploradores</th>
+                            <th>Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-eventos-body">
+                        <tr>
+                            <td colspan="10" class="text-center loading-cell">Cargando movimientos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Gráficos -->
+        <section id="tab-grafico" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-card glassmorphism">
+                    <h3>Distribución de Movimientos por Categoría</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-categorias"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card glassmorphism">
+                    <h3>Volumen Acumulado por Tipo de Flujo (BTC)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-volumen"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: Catálogo de Entidades -->
+        <section id="tab-entidades" class="tab-content">
+            <div class="content-toolbar">
+                <div>
+                    <h2>Grandes Participantes y Clústeres</h2>
+                    <p class="subtitle">Entidades registradas con evidencia documental</p>
+                </div>
+                <button class="btn-secondary" onclick="cargarEntidades()">🔄 Recargar</button>
+            </div>
+
+            <div class="entity-grid" id="entity-grid">
+                <!-- Se poblará vía JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Auditoría y Baselines -->
+        <section id="tab-predicciones" class="tab-content">
+            <div class="content-toolbar">
+                <div>
+                    <h2>Registro de Predicciones y Contraste Empírico</h2>
+                    <p class="subtitle">Comparación obligatoria frente a Buy & Hold y Persistencia (Principio VIII)</p>
+                </div>
+                <button class="btn-secondary" onclick="cargarPredicciones()">🔄 Recargar</button>
+            </div>
+
+            <div class="table-container glassmorphism">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Horizonte</th>
+                            <th>Precio Inicial</th>
+                            <th>Estado v1</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Precio Final</th>
+                            <th>Retorno Real</th>
+                            <th>Baseline Buy & Hold</th>
+                            <th>Baseline Persistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-predicciones-body">
+                        <tr>
+                            <td colspan="9" class="text-center loading-cell">Cargando predicciones...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Detalle de Evento -->
+    <div id="modal-detalle" class="modal-overlay" onclick="cerrarModal(event)">
+        <div class="modal-card glassmorphism" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modal-titulo">Detalle de Transacción On-Chain</h3>
+                <button class="close-btn" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-contenido">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="app-footer">
+        <p>🐋 <strong>BTC Whale Intelligence</strong> &bull; Análisis on-chain libre y verificable &bull; SQLite WAL &bull; Cero APIs de pago</p>
+    </footer>
+
+    <script src="/app.js"></script>
+</body>
+</html>

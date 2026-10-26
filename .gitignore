@@ -1,0 +1,37 @@
+# Secretos y configuración local (Principio XII)
+.env
+.env.*
+!.env.ejemplo
+
+# Base de datos y estado local
+datos/*.db
+datos/*.db-wal
+datos/*.db-shm
+datos/respaldos/
+*.lock
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+
+# Editores / SO
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
+
+#IA
+.agents
+.specify

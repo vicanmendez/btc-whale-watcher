@@ -1,0 +1,9 @@
+# Dependencias de ejecución de BTC Whale Intelligence (MVP).
+# Se mantienen mínimas para un VPS modesto (Principio XIII).
+# pandas y scikit-learn NO se incluyen en el MVP: los modelos v1 (referencia
+# climatológica y frecuencias condicionales) se calculan con NumPy y la
+# biblioteca estándar. Podrán añadirse cuando un modelo más complejo lo justifique.
+SQLAlchemy>=2.0,<2.1
+httpx>=0.27,<1.0
+python-dotenv>=1.0,<2.0
+numpy>=1.26,<3.0
